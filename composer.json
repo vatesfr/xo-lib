@@ -1,0 +1,25 @@
+{
+	"name": "vates/xo-lib",
+	"description": "Xen Orchestra client library.",
+	"keywords" : [
+		"xen",
+		"xen-orchestra"
+	],
+	"license": "GPL-3.0",
+	"authors": [
+		{
+			"name": "Julien Fontanet",
+			"email": "julien.fontanet@vates.fr"
+		}
+	],
+	"support": {
+		"issues": "https://github.com/julien-f/xo-lib/issues",
+		"source": "https://github.com/julien-f/xo-lib"
+	},
+	"require": {
+		"php": ">=5.3.0"
+	},
+	"autoload": {
+		"psr-0": { "": "src/" }
+	}
+}
