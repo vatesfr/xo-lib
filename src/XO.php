@@ -32,7 +32,7 @@ final class XO
 	 */
 	function __construct($url)
 	{
-		$this->_hdl = @stream_socket_client(
+		$this->_handle = @stream_socket_client(
 			$url,
 			/* out */ $errno,
 			/* out */ $errstr
