@@ -55,13 +55,34 @@ final class XO
 	 */
 	function __call($method, array $params)
 	{
+		if($this->_ns)
+		{
+			$method = $this->_ns.'.'.$method;
+			$this->_ns = null;
+		}
 		return $this->_call($method, $params);
+	}
+
+	function __get($name)
+	{
+		if ($this->_ns)
+		{
+			$this->_ns .= '.'.$name;
+		}
+		$this->_ns = $name;
+
+		return $this;
 	}
 
 	/**
 	 * @var resource
 	 */
 	private $_handle;
+
+	/**
+	 *
+	 */
+	private $_ns;
 
 	/**
 	 *
@@ -124,13 +145,26 @@ final class XO
 
 		$response = json_decode($response, true);
 
-		if (!isset($response['jsonrpc'], $response['result'])
+		if (!isset($response['jsonrpc'])
+		    || !(isset($response['result'])
+		         || isset($response['error']['code'], $response['error']['message']))
 		    || ($response['jsonrpc'] !== '2.0'))
 		{
 			throw new XO_Exception(
 				'invalid JSON RPC response',
 				array(
 					'response' => $response
+				)
+			);
+		}
+
+		if (isset($response['error']))
+		{
+			throw new XO_Exception(
+				'error response: {$code} − {$message}',
+				array(
+					'code'    => $response['error']['code'],
+					'message' => $response['error']['message'],
 				)
 			);
 		}
