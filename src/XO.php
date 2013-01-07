@@ -69,7 +69,10 @@ final class XO
 		{
 			$this->_ns .= '.'.$name;
 		}
-		$this->_ns = $name;
+		else
+		{
+			$this->_ns = $name;
+		}
 
 		return $this;
 	}
