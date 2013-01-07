@@ -131,20 +131,26 @@ final class XO
 		}
 
 		$len = (int) $len;
-		$response = @fread($this->_handle, $len);
-		if (($response === false)
-		    || (strlen($response) !== $len))
+		$response = '';
+		do
 		{
-			$error = error_get_last();
+			$buf = @fread($this->_handle, $len);
+			if ($buf === false)
+			{
+				$error = error_get_last();
 
-			throw new XO_Exception(
-				'failed to read the response: {$error}',
-				array(
-					'error'   => $error['message'],
-					'request' => $request
-				)
-			);
-		}
+				throw new XO_Exception(
+					'failed to read the response: {$error}',
+					array(
+						'error'   => $error['message'],
+						'request' => $request
+					)
+				);
+			}
+
+			$len      -= strlen($buf);
+			$response .= $buf;
+		} while ($len);
 
 		$response = json_decode($response, true);
 
